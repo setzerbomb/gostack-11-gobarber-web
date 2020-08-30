@@ -1,12 +1,14 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+
+import Login from '../pages/auth/Login';
 
 import Main from '../pages/app/Main';
 
 const Routes: React.FC = () => (
-  <BrowserRouter>
-    <Route path="/" component={Main} />
-  </BrowserRouter>
+  <Switch>
+    <Route path="/" component={Login} />
+  </Switch>
 );
 
 export default Routes;

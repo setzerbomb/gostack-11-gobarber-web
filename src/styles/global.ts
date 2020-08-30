@@ -11,13 +11,19 @@ export default createGlobalStyle`
     min-height:100%;
   }
   body{
-    background: #000;
-    -webkit-font-smoothing: antialiased !important;
+    background: #312E38;
+    color: #FFF;
+    -webkit-font-smoothing: antialiased;
   }
   body, input, button {
-    font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-family: 'Roboto Slab', serif;
   }
+
+  h1,h2,h3,h4,h5,h6,strong {
+    font-weight: 500;
+  }
+
   button {
     cursor: pointer;
   }
