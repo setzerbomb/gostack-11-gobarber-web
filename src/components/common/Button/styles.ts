@@ -1,22 +1,21 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
+import colors from '../../../styles/colors';
+
 export const Container = styled.button`
-  background: #ff9000;
+  background-color: ${colors.btnBg};
   border-radius: 10px;
   border: 0;
+  color: ${colors.btnTxt};
+  font-weight: 600;
   height: 56px;
-  padding: 0 16px;
-  width: 100%;
-  color: #312e38;
-  font-weight: 500;
   margin-top: 16px;
-
-  &::placeholder {
-    color: #666360;
-  }
+  padding: 0 16px;
+  transition: background-color 300ms ease;
+  width: 100%;
 
   &:hover {
-    background: ${shade(0.2, '#ff9000')};
+    background-color: ${(props): string => props && shade(0.2, colors.btnBg)};
   }
 `;
