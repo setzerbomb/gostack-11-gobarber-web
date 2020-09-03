@@ -12,8 +12,14 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  place-content: center;
+
   width: 100%;
+  max-width: 700px;
 `;
 
 const fadeRight = keyframes`

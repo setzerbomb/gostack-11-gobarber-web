@@ -4,17 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 import Routes from './routes';
 import GlobalStyle from './styles/global';
 
-import { AuthProvider } from './context/AuthContext';
-// import toastContext from './context/ToastContext';
+import ToastContainer from './components/common/ToastContainer';
+import AppProvider from './hooks';
 
 function App() {
   return (
     <>
-      <AuthProvider>
+      <AppProvider>
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
-      </AuthProvider>
+      </AppProvider>
       <GlobalStyle />
     </>
   );

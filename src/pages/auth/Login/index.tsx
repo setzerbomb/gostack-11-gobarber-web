@@ -9,7 +9,8 @@ import logo from '../../../assets/img/logo.svg';
 
 import api from '../../../services/api';
 
-import { AuthContext } from '../../../context/AuthContext';
+import { useAuth } from '../../../hooks/AuthContext';
+import { useToast } from '../../../hooks/ToastContext';
 
 // import { useToast } from '../../../context/ToastContext';
 import getValidationErrors from '../../../utils/getValidationsErrors';
@@ -17,7 +18,7 @@ import getValidationErrors from '../../../utils/getValidationsErrors';
 import Input from '../../../components/common/Input';
 import Button from '../../../components/common/Button';
 
-import { Container, Content, Background } from './styles';
+import { AnimationContainer, Container, Content, Background } from './styles';
 
 interface LoginFormData {
   email: string;
@@ -27,7 +28,8 @@ interface LoginFormData {
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   const history = useHistory();
 
@@ -47,7 +49,7 @@ const Login: React.FC = () => {
           abortEarly: false,
         });
 
-        signIn(data);
+        await signIn(data);
 
         history.push('/');
       } catch (err) {
@@ -55,40 +57,54 @@ const Login: React.FC = () => {
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
+
+          return;
         }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro na autenticação',
+        });
       }
     },
-    [history, signIn]
+    [history, signIn, addToast]
   );
 
   return (
     <Container>
       <Content>
-        <img src={logo} alt="Logo" />
+        <AnimationContainer>
+          <img src={logo} alt="Logo" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu logon</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu logon</h1>
 
-          <Input name="email" icon={FiMail} type="email" placeholder="E-mail" />
+            <Input
+              name="email"
+              icon={FiMail}
+              type="email"
+              placeholder="E-mail"
+            />
 
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit">Entrar</Button>
 
-          <Link to="/forgot">Esqueci minha senha</Link>
-        </Form>
+            <Link to="/forgot">Esqueci minha senha</Link>
+          </Form>
 
-        <Link to="/register">
-          <FiLogIn />
-          Criar conta
-        </Link>
+          <Link to="/register">
+            <FiLogIn />
+            Criar conta
+          </Link>
+        </AnimationContainer>
       </Content>
-
       <Background />
     </Container>
   );
