@@ -1,13 +1,14 @@
 import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiMail, FiUser, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
+
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
 import api from '../../../services/api';
 
-// import { useToast } from '../../../context/ToastContext';
+import { useToast } from '../../../hooks/ToastContext';
 import getValidationErrors from '../../../utils/getValidationsErrors';
 
 import { ReactComponent as Logo } from '../../../assets/img/logo.svg';
@@ -26,7 +27,7 @@ interface SignUpFormData {
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  // const { addToast } = useToast();
+  const { addToast } = useToast();
 
   const history = useHistory();
 
@@ -54,7 +55,13 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        await api.post('/users/register', data);
+
+        addToast({
+          type: 'success',
+          title: 'Cadastro realizado',
+          description: 'Você ja pode se conectar a plataforma',
+        });
 
         history.push('/');
       } catch (err) {
@@ -62,10 +69,18 @@ const SignUp: React.FC = () => {
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
+
+          return;
         }
+
+        addToast({
+          type: 'error',
+          title: 'Erro no cadastro',
+          description: 'Ocorreu um erro durante o cadastro, tente novamente',
+        });
       }
     },
-    [history]
+    [history, useToast]
   );
 
   return (
@@ -90,7 +105,7 @@ const SignUp: React.FC = () => {
             <Button type="submit">Cadastrar</Button>
           </Form>
 
-          <Link to="/">
+          <Link to="/login">
             <FiArrowLeft />
             Já possuo cadastro
           </Link>
